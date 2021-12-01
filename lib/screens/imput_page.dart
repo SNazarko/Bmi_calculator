@@ -1,11 +1,14 @@
-import 'package:bmi_calculator/results_page.dart';
-import 'package:bmi_calculator/reusable_card.dart';
+import 'package:bmi_calculator/screens/results_page.dart';
+import 'package:bmi_calculator/components/reusable_card.dart';
+import 'package:bmi_calculator/components/round_icon_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'costanse.dart';
-import 'icon_content.dart';
+import '../calculator_brain.dart';
+import '../components/bottom.dart';
+import '../costanse.dart';
+import '../components/icon_content.dart';
 
 const labelTextStyle = TextStyle(fontSize: 18, color: Color(0xFF8D8E98));
 const numberTextStyle = TextStyle(fontSize: 50, fontWeight: FontWeight.w900);
@@ -88,7 +91,7 @@ class _InputPageState extends State<InputPage> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(height.toString(), style: numberTextStyle),
-                      Text(
+                      const Text(
                         'cm',
                         style: labelTextStyle,
                       ),
@@ -96,14 +99,14 @@ class _InputPageState extends State<InputPage> {
                   ),
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
-                        inactiveTrackColor: Color(0xFF8D8E98),
+                        inactiveTrackColor: const Color(0xFF8D8E98),
                         activeTrackColor: Colors.white,
-                        thumbColor: Color(0xFFEB1555),
-                        overlayColor: Color(0x29EB1555),
+                        thumbColor: const Color(0xFFEB1555),
+                        overlayColor: const Color(0x29EB1555),
                         thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 15),
+                            const RoundSliderThumbShape(enabledThumbRadius: 15),
                         overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 30)),
+                            const RoundSliderOverlayShape(overlayRadius: 30)),
                     child: Slider(
                       onChanged: (double newValue) {
                         setState(() {
@@ -127,7 +130,7 @@ class _InputPageState extends State<InputPage> {
                   cardChild: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'WEIGHT',
                         style: labelTextStyle,
                       ),
@@ -146,7 +149,7 @@ class _InputPageState extends State<InputPage> {
                               });
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           RoundIconButton(
@@ -187,7 +190,7 @@ class _InputPageState extends State<InputPage> {
                               });
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           RoundIconButton(
@@ -205,47 +208,21 @@ class _InputPageState extends State<InputPage> {
                 )),
               ],
             )),
-            GestureDetector(
+            Bottom(
+              bottomTitle: 'CALCULAT',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResultsPage()));
+                CalculatorBrain calc = CalculatorBrain(height, weight);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResultsPage(
+                              interpretation: calc.getInterpretation(),
+                              resultText: calc.getResult(),
+                              bmiResult: calc.calculateBmi(),
+                            )));
               },
-              child: Container(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Center(
-                  child: const Text(
-                    'CALCULAT',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                height: 80,
-                width: double.infinity,
-                color: bottomContainerColor,
-              ),
             )
           ],
         ));
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({Key? key, required this.icon, required this.onPressed})
-      : super(key: key);
-  final IconData icon;
-  final onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onPressed,
-      elevation: 0,
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
-      constraints: BoxConstraints.tightFor(
-        width: 56,
-        height: 56,
-      ),
-      child: Icon(icon),
-    );
   }
 }
