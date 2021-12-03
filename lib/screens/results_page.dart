@@ -11,9 +11,13 @@ class ResultsPage extends StatelessWidget {
       required this.resultText,
       required this.interpretation})
       : super(key: key);
-  final String bmiResult;
+  final double bmiResult;
   final String resultText;
   final String interpretation;
+
+  String bmiResultToString() {
+    return bmiResult.toStringAsFixed(1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,7 @@ class ResultsPage extends StatelessWidget {
                           fontSize: 22),
                     ),
                     Text(
-                      bmiResult,
+                      bmiResultToString(),
                       style: const TextStyle(
                         fontSize: 100,
                         fontWeight: FontWeight.bold,
